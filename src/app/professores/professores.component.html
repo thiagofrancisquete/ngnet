@@ -1,18 +1,83 @@
-<app-titulo [titulo]="'Professores'"></app-titulo>
+<div class="row">
+  <div
+    [ngClass]="{
+      'col-sm-7': professorSelecionado,
+      'col-sm-12': !professorSelecionado
+    }"
+  >
+    <app-titulo [titulo]="'Professores'"></app-titulo>
 
-<table class="table table-striped table-bordered">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nome</th>
-      <th scope="col">Disciplina</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let professor of professores">
-      <td>{{ professor.id }}</td>
-      <td>{{ professor.nome }}</td>
-      <td>{{ professor.disciplina }}</td>
-    </tr>
-  </tbody>
-</table>
+    <table class="table table-striped table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Disciplina</th>
+          <!-- <th scope="col">Opções</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let professor of professores"
+          (click)="professorSelect(professor)"
+        >
+          <th scope="row">{{ professor.id }}</th>
+          <td>{{ professor.nome }}</td>
+          <td>{{ professor.disciplina }}</td>
+          <!-- <td>
+            <div class="btn-group">
+              <button
+                class="mr-1 btn btn-warning"
+                (click)="professorSelect(professor)"
+              >
+                Detalhes
+              </button>
+              <button class="btn btn-primary">Editar</button>
+              <button class="ml-1 btn btn-danger">Excluir</button>
+            </div>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-sm-5" *ngIf="professorSelecionado">
+    <div class="row">
+      <div class="mr-auto">
+        <app-titulo
+          [titulo]="'Professor ' + professorSelecionado.nome"
+        ></app-titulo>
+      </div>
+      <div class="mt-1">
+        <button class="btn btn-outline-secondary" (click)="voltar()">
+          Voltar
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="professorForm" (submit)="professorSubmit()">
+      <div class="form-group">
+        <label>Nome</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nome"
+          formControlName="nome"
+        />
+      </div>
+      <div class="form-group">
+        <label>Disciplina</label>
+        <input
+          type="text"
+          class="form-control"
+          id="disciplina"
+          formControlName="disciplina"
+        />
+      </div>
+      <div class="form-group text-right">
+        <hr />
+        <button class="btn btn-success mr-auto">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
